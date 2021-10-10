@@ -16,7 +16,10 @@ function ContactList() {
           <Name>
             {name} : {number}
           </Name>
-          <Button onClick={() => dispatch(contactsActions.deleteContacts(id))}>
+          <Button
+            type="button"
+            onClick={() => dispatch(contactsActions.deleteContact(id))}
+          >
             Delete
           </Button>
         </Item>

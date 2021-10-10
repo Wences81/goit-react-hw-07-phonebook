@@ -8,6 +8,7 @@ const items = createReducer(initialContacts, {
     const isNameExist = state.find(
       contact => contact.name.toLowerCase() === payload.name.toLowerCase(),
     );
+
     const isNumberExist = state.find(
       contact => contact.number === payload.number,
     );
