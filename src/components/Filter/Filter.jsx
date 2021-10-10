@@ -1,25 +1,28 @@
-import React from 'react';
+import contactsActions from '../../redux/contacts-actions';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Label, Input } from './Filter.styled';
 
-const Filter = ({ value, onChange, onBlur }) => {
+export default function Filter() {
+  const value = useSelector(state => state.contacts.filter);
+  const dispatch = useDispatch();
+
   return (
     <>
-      <Label htmlFor={'lab'}>
+      <Label>
         Find contacts by name
         <Input
           type="text"
-          id={'lab'}
           value={value}
-          onChange={onChange}
-          onBlur={onBlur}
+          onChange={e => dispatch(contactsActions.changeFilter(e.target.value))}
+          onBlur={e =>
+            dispatch(contactsActions.changeFilter((e.target.value = '')))
+          }
         />
       </Label>
     </>
   );
-};
-
-export default Filter;
+}
 
 Filter.propTypes = {
   value: PropTypes.string,
