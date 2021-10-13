@@ -1,10 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import contactsActions from './contacts-actions';
-import initialContacts from '../components/data/initialContacts.json';
+import { addContact, deleteContact, changeFilter } from './contacts-actions';
+import initialContacts from '../data/initialContacts.json';
 
 const items = createReducer(initialContacts, {
-  [contactsActions.addContact]: (state, { payload }) => {
+  [addContact]: (state, { payload }) => {
     const isNameExist = state.find(
       contact => contact.name.toLowerCase() === payload.name.toLowerCase(),
     );
@@ -23,12 +23,12 @@ const items = createReducer(initialContacts, {
     return [payload, ...state];
   },
 
-  [contactsActions.deleteContact]: (state, { payload }) =>
+  [deleteContact]: (state, { payload }) =>
     state.filter(contact => contact.id !== payload),
 });
 
 const filter = createReducer('', {
-  [contactsActions.changeFilter]: (_state, { payload }) => payload,
+  [changeFilter]: (_state, { payload }) => payload,
 });
 
 export default combineReducers({

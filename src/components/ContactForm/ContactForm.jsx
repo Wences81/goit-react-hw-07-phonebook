@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import contactsActions from '../../redux/contacts-actions';
+import { addContact } from '../../redux/contacts-actions';
 import { Form, Label, Input, Button } from './ContactForm.styled';
 
 export default function ContactForm() {
@@ -9,16 +9,8 @@ export default function ContactForm() {
   const [number, setNumber] = useState('');
 
   const handleChange = e => {
-    switch (e.target.name) {
-      case 'name':
-        setName(e.target.value);
-        break;
-      case 'number':
-        setNumber(e.target.value);
-        break;
-      default:
-        return;
-    }
+    const { name, value = '' } = e.target;
+    name === 'name' ? setName(value) : setNumber(value);
   };
 
   const resetState = () => {
@@ -28,7 +20,7 @@ export default function ContactForm() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    dispatch(contactsActions.addContact(name, number));
+    dispatch(addContact(name, number));
     resetState();
   };
 

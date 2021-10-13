@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import contactsActions from '../../redux/contacts-actions';
-import { getVisibleContacts } from '../../redux/contacts-selectors';
+import { deleteContact } from '../../redux/contacts-actions.js';
+import { getVisibleContacts } from '../../redux/contacts-selectors.js';
 
 import { Button, List, Name, Item } from './ContactList.styled';
 
@@ -16,10 +16,7 @@ function ContactList() {
           <Name>
             {name} : {number}
           </Name>
-          <Button
-            type="button"
-            onClick={() => dispatch(contactsActions.deleteContact(id))}
-          >
+          <Button type="button" onClick={() => dispatch(deleteContact(id))}>
             Delete
           </Button>
         </Item>
