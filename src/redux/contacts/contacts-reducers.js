@@ -1,37 +1,47 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
-import { addContact, deleteContact, changeFilter } from './contacts-actions';
-import initialContacts from '../data/initialContacts.json';
+import {
+  addContact,
+  deleteContact,
+  fetchContacts,
+} from './contacts-operations';
+import { contactsActions } from '.';
 
-const items = createReducer(initialContacts, {
-  [addContact]: (state, { payload }) => {
-    const isNameExist = state.find(
-      contact => contact.name.toLowerCase() === payload.name.toLowerCase(),
-    );
-
-    const isNumberExist = state.find(
-      contact => contact.number === payload.number,
-    );
-    if (isNameExist) {
-      alert(`${payload.name} is already in contacts`);
-      return state;
-    }
-    if (isNumberExist) {
-      alert(`${payload.number} is already in contacts`);
-      return state;
-    }
-    return [payload, ...state];
-  },
-
-  [deleteContact]: (state, { payload }) =>
+const items = createReducer([], {
+  [fetchContacts.fulfilled]: (_, state, { payload }) => payload,
+  [addContact.fulfilled]: (state, { payload }) => [payload, ...state],
+  [deleteContact.fulfilled]: (state, { payload }) =>
     state.filter(contact => contact.id !== payload),
 });
 
+const isLoading = createReducer(false, {
+  [fetchContacts.pending]: () => true,
+  [fetchContacts.fulfilled]: () => false,
+  [fetchContacts.rejected]: () => false,
+  [addContact.pending]: () => true,
+  [addContact.fulfilled]: () => false,
+  [addContact.rejected]: () => false,
+  [deleteContact.pending]: () => true,
+  [deleteContact.fulfilled]: () => false,
+  [deleteContact.rejected]: () => false,
+});
+
+const error = createReducer(null, {
+  [fetchContacts.rejected]: (_state, { payload }) => payload,
+  [fetchContacts.pending]: null,
+  [addContact.rejected]: (_state, { payload }) => payload,
+  [addContact.pending]: null,
+  [deleteContact.rejected]: (_state, { payload }) => payload,
+  [deleteContact.pending]: null,
+});
+
 const filter = createReducer('', {
-  [changeFilter]: (_state, { payload }) => payload,
+  [contactsActions.changeFilter]: (_state, { payload }) => payload,
 });
 
 export default combineReducers({
   items,
+  isLoading,
+  error,
   filter,
 });
