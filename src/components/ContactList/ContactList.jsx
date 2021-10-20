@@ -1,13 +1,16 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getVisibleContacts, contactsOperations } from 'redux/contacts';
+import {
+  contactsOperations,
+  contactsSelectors,
+} from '../../redux/contacts/index';
 import { Button, List, Name, Item } from './ContactList.styled';
 
 function ContactList() {
   const dispatch = useDispatch();
 
-  const contacts = useSelector(getVisibleContacts);
-  useEffect(() => dispatch(contactsOperations.fethContacts()), [dispatch]);
+  const contacts = useSelector(contactsSelectors.getVisibleContacts);
+  useEffect(() => dispatch(contactsOperations.fetchContacts()), [dispatch]);
 
   return (
     <List>
